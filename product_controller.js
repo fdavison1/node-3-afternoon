@@ -1,13 +1,14 @@
 module.exports = {
     //create_products
     create(req, res) {
+        console.log(req.body)
         const db = req.app.get('db')
-        const { name, desc, price, image } = req.body
-        db.create_products({
+        const { name, description, price, image_url } = req.body
+        db.create_product({
             name: name,
-            description: desc,
+            description: description,
             price: price,
-            image_url: image
+            image_url: image_url
         })
             .then(result => {
                 res.status(200).send(result)
@@ -19,7 +20,7 @@ module.exports = {
     //read_product
     getOne(req, res) {
         const db = req.app.get('db')
-        db.read_product(req.params.product_id)
+        db.read_product(req.params.id)
             .then(result => {
                 res.status(200).send(result)
             })
@@ -40,7 +41,7 @@ module.exports = {
     //update_product
     update(req, res) {
         const db = req.app.get('db')
-        db.update_product([req.body.desc, req.params.product_id])
+        db.update_product([req.query.desc, req.params.id])
             .then(result => {
                 res.status(200).send(result)
             })
@@ -50,12 +51,13 @@ module.exports = {
     },
     //delete_product
     delete(req, res) {
+        console.log(req.params)
         const db = req.app.get('db')
-        db.delete_product(req.params.product_id)
+        db.delete_product(+req.params.id)
         .then(result => {
             res.status(200).send(result)
         }).catch(err => {
-            res.status(500).send('something went wrong')
+            res.status(500).send('something went wrong', err)
         })
     }
 }
