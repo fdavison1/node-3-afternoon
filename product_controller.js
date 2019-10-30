@@ -51,7 +51,7 @@ module.exports = {
     },
     //delete_product
     delete(req, res) {
-        console.log(req.params)
+        // console.log(req.params)
         const db = req.app.get('db')
         db.delete_product(+req.params.id)
         .then(result => {
